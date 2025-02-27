@@ -42,7 +42,7 @@ static long int	my_ioctl  (struct file*, unsigned int, unsigned long);
 static int  __init my_pci_probe  (struct pci_dev *dev, const struct pci_device_id *id);
 static void __exit my_pci_remove (struct pci_dev *dev);
 
-/* pci ids which this driver supports */
+/* pci ids which  driver supports */
 
 static struct pci_device_id pci_ids[] = {
 	{PCI_DEVICE(MY_PCI_VENDOR_ID, MY_PCI_DEVICE_ID), },
@@ -125,7 +125,7 @@ static int __init my_init(void)
 	printk("my_driver: device number %d was registered!\n", MAJOR(my_device_nbr));
 
 	/* 2. create class : appears at /sys/class */
-	if ((my_class = class_create(THIS_MODULE, DRIVER_CLASS)) == NULL) {
+	if ((my_class = class_create(DRIVER_CLASS)) == NULL) {
 		printk("my_driver: device class count not be created!\n");
 		goto ClassError;
 	}
