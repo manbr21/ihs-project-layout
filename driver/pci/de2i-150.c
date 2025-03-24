@@ -91,7 +91,8 @@ static const char* peripheral[] = {
 	"display_l",
 	"display_r",
 	"green_leds",
-	"red_leds"
+	"red_leds",
+	"display_4"
 };
 
 enum perf_names_idx {
@@ -100,7 +101,8 @@ enum perf_names_idx {
 	IDX_DISPLAYL,
 	IDX_DISPLAYR,
 	IDX_GREENLED,
-	IDX_REDLED
+	IDX_REDLED,
+	IDX_DISPLAY4
 };
 static int wr_name_idx = IDX_DISPLAYR;
 static int rd_name_idx = IDX_SWITCH;
@@ -241,20 +243,24 @@ static long int my_ioctl(struct file*, unsigned int cmd, unsigned long arg)
 		rd_name_idx = IDX_PBUTTONS;
 		break;
 	case WR_L_DISPLAY:
-		write_pointer = bar0_mmio + 0xC020; //TODO: update offset
+		write_pointer = bar0_mmio + 0xC040; 
 		wr_name_idx = IDX_DISPLAYL;
 		break;
 	case WR_R_DISPLAY:
-		write_pointer = bar0_mmio + 0xC000; //TODO: update offset
+		write_pointer = bar0_mmio + 0xC020; 
 		wr_name_idx = IDX_DISPLAYR;
 		break;
 	case WR_RED_LEDS:
 		write_pointer = bar0_mmio + 0xC0A0; 
-		wr_name_idx = IDX_DISPLAYR;
+		wr_name_idx = IDX_REDLED;
 		break;
 	case WR_GREEN_LEDS:
 		write_pointer = bar0_mmio + 0xC0C0;
-		wr_name_idx = IDX_DISPLAYR;
+		wr_name_idx = IDX_GREENLED;
+		break;
+	case WR_4_DISPLAY:
+		write_pointer = bar0_mmio + 0xC000;
+		wr_name_idx = IDX_DISPLAY4;
 		break;
 	default:
 		printk("my_driver: unknown ioctl command: 0x%X\n", cmd);
@@ -298,8 +304,8 @@ static int __init my_pci_probe(struct pci_dev *dev, const struct pci_device_id *
 	bar0_mmio = pci_iomap(dev, 0, bar_len);
 
 	/* initialize a default peripheral read and write pointer */
-	write_pointer = bar0_mmio + 0xC000; //TODO: update offset
-	read_pointer  = bar0_mmio + 0xC080; //TODO: update offset
+	write_pointer = bar0_mmio + 0xC040; //nao sei pra que serve mas coloquei os valores padrao que iniciam os idx: display r
+	read_pointer  = bar0_mmio + 0xC060; //nao sei pra que serve mas coloquei os valores padrao que iniciam os idx: switch
 
 	return 0;
 }

@@ -138,7 +138,7 @@ static loff_t my_seek(struct file* filp, loff_t off, int whence)
 		new_pos = filp->f_pos + off;
 		break;
 	case 2: /* SEEK_END */
-		new_pos = BUFFER_LEN + off; //TODO: this might be wrong
+		new_pos = BUFFER_LEN + off; //TODO: this might be wrong		(jpbm) tem uma cara q se escrever o offset errado vai dar overflow e invasao de memoria
 		break;
 	default: /* can't happen */
 		new_pos = -EINVAL;
